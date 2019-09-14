@@ -49,7 +49,7 @@ geterror - gets current error
 #include "stepper_controller.h"
 #include <stdlib.h>
 #include "nonvolatile.h"
-#include "Reset.h"
+#include "reset.h"
 #include "nzs.h"
 #include "ftoa.h"
 #include "board.h"

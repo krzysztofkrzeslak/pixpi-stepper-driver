@@ -11,7 +11,7 @@
  *********************************************************************/
 #include <Arduino.h>
 #include "syslog.h"
-#include "A1333.h"
+#include "a1333.h"
 #include "SPI.h"
 #include <stdio.h>
 #include "board.h"
@@ -653,3 +653,4 @@ void A1333::diagnostics(char *ptrStr)
 }
 
 #pragma GCC pop_options
+
