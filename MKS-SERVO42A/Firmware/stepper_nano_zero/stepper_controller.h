@@ -15,7 +15,7 @@
 #include "syslog.h"
 #include "board.h"
 #include "as5047d.h"
-#include "a1333.h"
+#include "A1333.h"
 #include "calibration.h"
 #include "A4954.h"
 #include "A5995.h"

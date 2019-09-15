@@ -11,7 +11,7 @@
  *********************************************************************/
 #include <Arduino.h>
 #include "syslog.h"
-#include "a1333.h"
+#include "A1333.h"
 #include "SPI.h"
 #include <stdio.h>
 #include "board.h"
