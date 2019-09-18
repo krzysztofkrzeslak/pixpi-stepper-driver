@@ -834,11 +834,12 @@ void NZS::loop(void)
 	//read the enable pin and update
 	// this is also done as an edge interrupt but does not always see
 	// to trigger the ISR.
-	enableInput();
-	if (enableState != stepperCtrl.getEnable())
-	{
-		stepperCtrl.enable(enableState);
-	}
+	//enableInput();
+	//stepperCtrl.enable(enableState);
+	//if (enableState != stepperCtrl.getEnable())
+	//{
+	//	stepperCtrl.enable(enableState);
+	//}
 
 	//handle EEPROM
 	eepromData.angle=stepperCtrl.getCurrentAngle();
@@ -847,6 +848,25 @@ void NZS::loop(void)
 	eepromWriteCache((uint8_t *)&eepromData,sizeof(eepromData));
 
 	commandsProcess(); //handle commands
+
+
+	if(!digitalRead(PIN_SW1)){
+		stepperCtrl.requestStep(0, 1);
+		delay(2);
+	}
+	if(!digitalRead(PIN_SW4)){
+		stepperCtrl.requestStep(1, 1);
+		delay(2);
+	}
+
+	if(!digitalRead(PIN_SW3)){
+		if(stepperCtrl.getEnable()){
+			stepperCtrl.enable(false);
+		}else{
+			stepperCtrl.enable(true);
+		}
+		delay(600);
+	}
 #ifndef DISABLE_LCD
 	Lcd.process();
 #endif
