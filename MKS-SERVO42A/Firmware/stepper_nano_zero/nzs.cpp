@@ -552,7 +552,7 @@ void validateAndInitNVMParams(void)
 	if (false == NVM->SystemParams.parametersVaild)
 	{
 		SystemParams_t params;
-		params.microsteps=16;
+		params.microsteps=2;
 		params.controllerMode=CTRL_SIMPLE;
 		params.dirPinRotation=CW_ROTATION; //default to clockwise rotation when dir is high
 		params.errorLimit=(int32_t)ANGLE_FROM_DEGREES(1.8);
@@ -613,7 +613,7 @@ static void configure_bod(void)
 
 #ifdef MKS_USE_AS	//mks mark ("USE_AS")
 #include "atmel_start_pins.h"
-#endif	
+#endif
 
 void NZS::begin(void)
 {
@@ -621,7 +621,7 @@ void NZS::begin(void)
 	stepCtrlError_t stepCtrlError;
 #ifdef MKS_USE_AS	//mks mark ("USE_AS")
 	to = 2;
-#endif	
+#endif
 
 	//set up the pins correctly on the board.
 	boardSetupPins();
@@ -756,6 +756,7 @@ void NZS::begin(void)
 	SmartPlanner.begin(&stepperCtrl);
 	RED_LED(false);
 	LOG("SETUP DONE!");
+
 }
 
 
@@ -890,7 +891,7 @@ void nzs_loop()
 	{
 	nzs.loop();
 	}
-	
+
 }
 
 void nzs_test()
@@ -957,7 +958,7 @@ void stepperTest()
 			digitalWrite(13,HIGH);
 			digitalWrite(8,HIGH);
 			}
-			
+
 
 	}
 
