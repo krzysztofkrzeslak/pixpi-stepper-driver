@@ -149,7 +149,7 @@ void StepperCtrl::updateParamsFromNVM(void)
 		//MotorParams_t Params;
 		motorParams.fullStepsPerRotation=200;
 		motorParams.currentHoldMa=100;	//500
-		motorParams.currentMa=300;		//1500
+		motorParams.currentMa=1000;		//1500
 		motorParams.homeHoldMa=100;		//200
 		motorParams.homeMa=300;			//800
 		motorParams.motorWiring=true;
