@@ -5,6 +5,8 @@
 extern StepperCtrl stepperCtrl;
 
 volatile int32_t stepsChanged=0;
+volatile uint32_t pulseRisingTimestamp=0;
+
 #define WAIT_TC32_REGS_SYNC(x) while(x->COUNT32.STATUS.bit.SYNCBUSY);
 
 #if (PIN_STEP_INPUT != 0)
@@ -34,30 +36,30 @@ int32_t getSteps(void)
 	return x;
 #endif
 }
+
 //this function is called on the rising edge of a step from external device
-static void stepInput(void)
+static void stepInputOnChange(void)
 {
-	static int dir;
-	//read our direction pin
-	dir = digitalRead(PIN_DIR_INPUT);
 
-	if (CW_ROTATION == NVM->SystemParams.dirPinRotation)
-	{
-		dir=!dir; //reverse the rotation
+
+	if(digitalRead(PIN_STEP_INPUT)){
+		//it's was rising edge
+		pulseRisingTimestamp = micros();
+	}else{
+		//it was falling edge
+		uint32_t pulseLengthMicros=micros()-pulseRisingTimestamp;
+		if(pulseLengthMicros>2000){
+			stepperCtrl.requestStep(1,NVM->SystemParams.microsteps);
+		}else if(pulseLengthMicros<2000){
+			stepperCtrl.requestStep(0,NVM->SystemParams.microsteps);
+		}
+
 	}
 
-#ifndef USE_NEW_STEP
-	stepperCtrl.requestStep(dir,1);
-#else
-	if (dir)
-	{
-		stepsChanged++;
-	}else
-	{
-		stepsChanged--;
-	}
-#endif
+
 }
+
+
 
 void enableEIC(void)
 {
@@ -164,7 +166,7 @@ void stepPinSetup(void)
 
 
 #else
-	attachInterrupt(digitalPinToInterrupt(PIN_STEP_INPUT), stepInput, RISING);
+	attachInterrupt(digitalPinToInterrupt(PIN_STEP_INPUT), stepInputOnChange, CHANGE);
 	NVIC_SetPriority(EIC_IRQn, 0); //set port A interrupt as highest priority
 #endif
 
